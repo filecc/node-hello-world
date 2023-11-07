@@ -21,5 +21,5 @@ let counter = 0
 
 
 const server = http.createServer((req, res) => {
-    res.end(process.env.MESSAGE)
+    res.end(process.env.MESSAGE + `Ciao`)
 }).listen(port, host, ()=>console.log(`Server started at http://${host}:${port}`))
