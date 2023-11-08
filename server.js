@@ -38,6 +38,11 @@ const response = (res, content, statusCode = 200) => {
     res.end(content)
 }
 
+const jsonResponse = (res, content, statusCode = 200) => {
+    res.writeHead(statusCode, { "Content-Type": "application/json; charset=utf-8" });
+    res.end(JSON.stringify(content))
+}
+
 
 const server = http.createServer((req, res) => {
     const randomIndex = Math.round(Math.random() *( randomPhrases.length - 1)) 
@@ -47,6 +52,9 @@ const server = http.createServer((req, res) => {
             break;
         case '/about':
             response(res, `<h1>About</h1>`)
+            break;
+        case '/api':
+            jsonResponse(res, {message: 'hello world'})
             break;
         default:
             response(res, '<h1>Not found</h1>', 404)
