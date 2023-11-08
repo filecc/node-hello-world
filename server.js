@@ -17,17 +17,43 @@ const randomPhrases = [
     "Il successo è camminare da un fallimento all'altro senza perdere l'entusiasmo. - Confucio"
   ]
 
+  /**
+   * 
+   * @param {string[]} arrayOfPhrases 
+   * @param {number} index 
+   * @returns 
+   */
 const getRandomPhrase = (arrayOfPhrases, index) => {
     return arrayOfPhrases[index]
 }
 
+/**
+ * 
+ * @param {http.ServerResponse} res 
+ * @param {string} content 
+ * @param {number} statusCode 
+ */
+const response = (res, content, statusCode = 200) => {
+    res.writeHead(statusCode, { "Content-Type": "text/html; charset=utf-8" });
+    res.end(content)
+}
+
 
 const server = http.createServer((req, res) => {
-    let randomIndex = Math.round(Math.random() *( randomPhrases.length - 1)) 
+    const randomIndex = Math.round(Math.random() *( randomPhrases.length - 1)) 
+    switch (req.url) {
+        case '/':
+            response(res, `<h1>${process.env.MESSAGE}:</h1><p>${getRandomPhrase(randomPhrases, randomIndex)}</p>`)
+            break;
+        case '/about':
+            response(res, `<h1>About</h1>`)
+            break;
+        default:
+            response(res, '<h1>Not found</h1>', 404)
+            break;
+    }
+   
     
-    res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-    res.end(`<h1>${process.env.MESSAGE}:</h1>
-    <p>${getRandomPhrase(randomPhrases, randomIndex)}</p>
-`)
+    
 
 }).listen(port, host, ()=>console.log(`Server started at http://${host}:${port}`))
